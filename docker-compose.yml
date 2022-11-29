@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  dd-toy:
+    build:
+      dockerfile: Dockerfile
+    ports: 
+      - "8080:8080"
+    networks:
+      - dd-toy
+  
+  observability:
+    image: datadog/agent@latest
+    links:
+      - dd-toy
+    pid: host
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=datadog.hq.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+    networks:
+      - dd-toy
+
+networks:
+  dd-toy:
