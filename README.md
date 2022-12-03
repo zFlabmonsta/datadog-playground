@@ -1,2 +1,2 @@
-# dd-toy
+# Datadog-playground
 Datadog playground
