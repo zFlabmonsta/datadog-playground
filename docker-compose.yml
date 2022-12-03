@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   web:
-    container_name: dd-toy
+    container_name: web-server
     build:
       context: ./web
       dockerfile: Dockerfile
@@ -16,9 +16,9 @@ services:
       - DD_TRACE_AGENT_PORT=8126
       - DATADOG_HOST=datadog
     labels:
-      com.datadoghq.ad.logs: '[{"source": "docker-container", "service": "dd-toy"}]'
+      com.datadoghq.ad.logs: '[{"source": "docker-container", "service": "web-server"}]'
       com.datadoghq.tags.env: 'development'
-      com.datadog.tags.service: 'dd-toy'
+      com.datadog.tags.service: 'web-server'
       com.datadoghq.tags.version: '1.0.0'
   
   datadoghq:
