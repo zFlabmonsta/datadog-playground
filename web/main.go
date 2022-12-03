@@ -10,7 +10,6 @@ import (
 
 func main() {
 	tracer.Start(
-		tracer.WithAgentAddr("datadog-agent:8126"),
 		tracer.WithService("dd-toy"),
 		tracer.WithEnv("development"),
 	)

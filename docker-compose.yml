@@ -1,25 +1,32 @@
 version: "3.9"
 
 services:
-  dd-toy:
+  web:
     container_name: dd-toy
     build:
       context: ./web
       dockerfile: Dockerfile
+    networks: 
+      - web-service
     ports: 
       - "3000:3000"
-    networks:
-      - dd-toy
     environment:
+      - DD_ENV=development
       - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8126
       - DATADOG_HOST=datadog
     labels:
       com.datadoghq.ad.logs: '[{"source": "docker-container", "service": "dd-toy"}]'
+      com.datadoghq.tags.env: 'development'
+      com.datadog.tags.service: 'dd-toy'
+      com.datadoghq.tags.version: '1.0.0'
   
   datadoghq:
     container_name: datadog-agent
     image: 'gcr.io/datadoghq/agent:latest'
     pid: host
+    networks:
+      - web-service
     environment:
       - DD_API_KEY=${DD_API_KEY}
       - DD_APM_ENABLED=true
@@ -28,9 +35,10 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_LOGS_CONFIG_DOCKER_CONTAINER_USE_FILE=true
       - 'DD_CONTAINER_EXCLUDE=name:datadog-agent'
+      - DD_APM_NON_LOCAL_TRAFFIC=true
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
       - '/var/lib/docker/containers:/var/lib/docker/containers:ro'
       - '/sys/fs/cgroup/:/host/sys/fs/cgroup:ro'
 networks:
-  dd-toy:
+  web-service:
