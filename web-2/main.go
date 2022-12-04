@@ -1,16 +1,21 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
 
 func main() {
+	logger := log.New()
+	logger.Formatter = &log.JSONFormatter{}
+	logger.Out = os.Stdout
+
 	tracer.Start()
 	defer tracer.Stop()
 
@@ -25,12 +30,15 @@ func main() {
 	}
 	defer profiler.Stop()
 
+	middleware.DefaultLogger = middleware.RequestLogger(&middleware.DefaultLogFormatter{
+		Logger: logger,
+	})
+
 	r := chi.NewRouter()
-	r.Use(middleware.Logger)
+	r.Use(middleware.DefaultLogger)
 	r.Use(DataDogTracer())
 
 	r.Get("/web2", func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("header: %v", r.Header)
 		w.Write([]byte("welcome web2"))
 	})
 

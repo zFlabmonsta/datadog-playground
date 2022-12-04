@@ -19,6 +19,7 @@ services:
       com.datadoghq.tags.env: 'development'
       com.datadog.tags.service: 'datadog-playground'
       com.datadoghq.tags.version: '1.0.0'
+      com.datadog.ad.logs: '[{"source": "go", "service": "datadog-playground"}]'
   web2:
     container_name: web2-server
     build:
@@ -35,6 +36,7 @@ services:
       com.datadoghq.tags.env: 'development'
       com.datadog.tags.service: 'datadog-playground-2'
       com.datadoghq.tags.version: '1.0.0'
+      com.datadog.ad.logs: '[{"source": "go", "service": "datadog-playground-2"}]'
  
   datadoghq:
     container_name: datadog-agent
