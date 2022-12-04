@@ -12,8 +12,8 @@ COPY *.go ./
 RUN go mod download
 RUN go mod tidy
 
-RUN go build -o dd-toy
+RUN go build -o datadog_playground
 
 EXPOSE 3000
 
-CMD [ "./dd-toy" ]
+CMD [ "./datadog_playground" ]

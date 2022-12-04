@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   web:
-    container_name: dd-toy
+    container_name: web-server
     build:
       context: ./web
       dockerfile: Dockerfile
@@ -16,11 +16,28 @@ services:
       - DD_TRACE_AGENT_PORT=8126
       - DATADOG_HOST=datadog
     labels:
-      com.datadoghq.ad.logs: '[{"source": "docker-container", "service": "dd-toy"}]'
       com.datadoghq.tags.env: 'development'
-      com.datadog.tags.service: 'dd-toy'
+      com.datadog.tags.service: 'datadog-playground'
       com.datadoghq.tags.version: '1.0.0'
-  
+      com.datadog.ad.logs: '[{"source": "go", "service": "datadog-playground"}]'
+  web2:
+    container_name: web2-server
+    build:
+      context: ./web-2
+      dockerfile: Dockerfile
+    networks:
+      - web-service
+    environment:
+      - DD_ENV=development
+      - DD_AGENT_HOST=datadog-agent
+      - DD_TRACE_AGENT_PORT=8126
+      - DATADOG_HOST=datadog 
+    labels:
+      com.datadoghq.tags.env: 'development'
+      com.datadog.tags.service: 'datadog-playground-2'
+      com.datadoghq.tags.version: '1.0.0'
+      com.datadog.ad.logs: '[{"source": "go", "service": "datadog-playground-2"}]'
+ 
   datadoghq:
     container_name: datadog-agent
     image: 'gcr.io/datadoghq/agent:latest'
