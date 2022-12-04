@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	log "github.com/sirupsen/logrus"
+	mwtracer "github.com/zFlabmonsta/datadog-playground/pkg/tracer"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
@@ -36,7 +37,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.DefaultLogger)
-	r.Use(DataDogTracer())
+	r.Use(mwtracer.DataDogTracer())
 
 	r.Get("/", welcome())
 
