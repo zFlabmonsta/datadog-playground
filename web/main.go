@@ -28,20 +28,27 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(DataDogTracer())
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
-	})
+
+	r.Get("/", welcome())
+
 	http.ListenAndServe(":3000", r)
 }
 
-func DataDogTracer() func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			span := tracer.StartSpan("web.request", tracer.ResourceName(r.RequestURI))
-			defer span.Finish()
-
-			next.ServeHTTP(w, r)
+func welcome() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		req, err := http.NewRequest("GET", "http://web2-server:3001/web2", nil)
+		if err != nil {
+			log.Printf("Unable to create request: %v", err)
+			return
 		}
-		return http.HandlerFunc(fn)
+		req.Header = r.Header
+
+		_, err = http.DefaultClient.Do(req)
+		if err != nil {
+			log.Printf("bad response: %v", err)
+			return
+		}
+
+		w.Write([]byte("it works"))
 	}
 }
