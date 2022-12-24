@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/zFlabmonsta/datadog-playground/internal/web2"
-	"github.com/zFlabmonsta/datadog-playground/pkg"
+	"github.com/zFlabmonsta/datadog-playground/pkg/log"
 	"gopkg.in/DataDog/dd-trace-go.v1/ddtrace/tracer"
 	"gopkg.in/DataDog/dd-trace-go.v1/profiler"
 )
@@ -22,7 +22,7 @@ func main() {
 		),
 	)
 	if err != nil {
-		log.Fatalf("error starting profiler: %v", err)
+		logrus.Fatalf("error starting profiler: %v", err)
 	}
 	defer profiler.Stop()
 
@@ -30,8 +30,8 @@ func main() {
 	r.Use(web2.DataDogTracer())
 	r.Use(web2.CompanyContext())
 
-	logger := pkg.NewLogger(log.New(), &log.JSONFormatter{})
-	r.Use(web2.Logger(logger))
+	logger := log.NewLogger(logrus.New(), &logrus.JSONFormatter{})
+	r.Use(log.Logger(logger))
 
 	r.Get("/web2", func(w http.ResponseWriter, r *http.Request) {
 		_, err := web2.Divide(10, 0)

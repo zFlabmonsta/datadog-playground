@@ -3,14 +3,23 @@ package web1
 import (
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
+	pkg "github.com/zFlabmonsta/datadog-playground/pkg/log"
 )
 
-func Welcome() func(w http.ResponseWriter, r *http.Request) {
+type handler struct {
+	log *pkg.LoggerWrapper
+}
+
+func NewHandler(logger *pkg.LoggerWrapper) *handler {
+	return &handler{log: logger}
+}
+
+func (h *handler) Welcome() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
 		req, err := http.NewRequest("GET", "http://web2-server:3001/web2", nil)
 		if err != nil {
-			log.Printf("Unable to create request: %v", err)
+			h.log.Errorf(ctx, "Unable to create request: %w", err)
 			return
 		}
 
@@ -19,7 +28,7 @@ func Welcome() func(w http.ResponseWriter, r *http.Request) {
 
 		_, err = http.DefaultClient.Do(req)
 		if err != nil {
-			log.Printf("bad response: %v", err)
+			h.log.Errorf(ctx, "bad response: %w", err)
 			return
 		}
 
