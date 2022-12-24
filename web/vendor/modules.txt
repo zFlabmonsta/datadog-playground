@@ -33,6 +33,10 @@ github.com/dgraph-io/ristretto/z/simd
 # github.com/dustin/go-humanize v1.0.0
 ## explicit
 github.com/dustin/go-humanize
+# github.com/go-chi/chi v1.5.0
+## explicit; go 1.15
+github.com/go-chi/chi
+github.com/go-chi/chi/middleware
 # github.com/go-chi/chi/v5 v5.0.7
 ## explicit; go 1.14
 github.com/go-chi/chi/v5

@@ -5,7 +5,7 @@ services:
     container_name: web-server
     build:
       context: ./web
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.web1
     networks: 
       - web-service
     ports: 
@@ -22,8 +22,8 @@ services:
   web2:
     container_name: web2-server
     build:
-      context: ./web-2
-      dockerfile: Dockerfile
+      context: ./web
+      dockerfile: Dockerfile.web2
     networks:
       - web-service
     environment:
