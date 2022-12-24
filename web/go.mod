@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/go-chi/chi/v5 v5.0.7
+	github.com/sirupsen/logrus v1.7.0
 	gopkg.in/DataDog/dd-trace-go.v1 v1.43.1
 )
 
