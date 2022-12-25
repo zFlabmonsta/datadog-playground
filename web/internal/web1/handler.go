@@ -3,14 +3,14 @@ package web1
 import (
 	"net/http"
 
-	pkg "github.com/zFlabmonsta/datadog-playground/pkg/log"
+	"github.com/zFlabmonsta/datadog-playground/pkg/log"
 )
 
 type handler struct {
-	log *pkg.LoggerWrapper
+	log *log.LoggerWrapper
 }
 
-func NewHandler(logger *pkg.LoggerWrapper) *handler {
+func NewHandler(logger *log.LoggerWrapper) *handler {
 	return &handler{log: logger}
 }
 
