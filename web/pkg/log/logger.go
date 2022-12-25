@@ -22,21 +22,20 @@ func NewLogger(l *log.Logger, f Formatter) *LoggerWrapper {
 }
 
 func (l *LoggerWrapper) Errorf(ctx context.Context, format string, args ...interface{}) {
-	l.Logger.WithFields(l.tracingFields(ctx)).Errorf(format, args...)
+	l.Logger.WithFields(l.processAttrFields(ctx)).Errorf(format, args...)
 }
 
 func (l *LoggerWrapper) Infof(ctx context.Context, format string, args ...interface{}) {
-	l.Logger.WithFields(l.tracingFields(ctx)).Infof(format, args...)
+	l.Logger.WithFields(l.processAttrFields(ctx)).Infof(format, args...)
 }
 
-func (l *LoggerWrapper) WithFields(fields Fields) *LoggerWrapper {
-	l.Logger.WithFields(fields)
-	return l
-}
-
-func (l *LoggerWrapper) tracingFields(ctx context.Context) Fields {
+func (l *LoggerWrapper) processAttrFields(ctx context.Context) Fields {
 	return Fields{
 		"subdomain": ctx.Value("subdomain"),
-		"x-trace":   ctx.Value("datadogTraceID"),
+		"dd": DataDog{
+			TraceID: ctx.Value("datadogTraceID").(uint64),
+			SpanID:  ctx.Value("datadogSpanID").(uint64),
+		},
+		"http": ctx.Value(HTTP{}),
 	}
 }

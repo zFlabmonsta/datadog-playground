@@ -55,5 +55,6 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
       - '/var/lib/docker/containers:/var/lib/docker/containers:ro'
       - '/sys/fs/cgroup/:/host/sys/fs/cgroup:ro'
+      - '/sys/kernel/debug:/sys/kernel/debug'
 networks:
   web-service:

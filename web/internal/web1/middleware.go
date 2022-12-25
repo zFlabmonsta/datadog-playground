@@ -19,7 +19,8 @@ func DataDogTracer() func(http.Handler) http.Handler {
 				log.Printf("Failed to inject tracer: %v", err)
 			}
 
-			r = r.WithContext(context.WithValue(r.Context(), "datadogTraceID", r.Header.Get("X-Datadog-Trace-Id")))
+			r = r.WithContext(context.WithValue(r.Context(), "datadogTraceID", span.Context().TraceID()))
+			r = r.WithContext(context.WithValue(r.Context(), "datadogSpanID", span.Context().SpanID()))
 			next.ServeHTTP(w, r)
 		}
 		return http.HandlerFunc(fn)

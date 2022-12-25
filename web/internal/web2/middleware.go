@@ -17,10 +17,11 @@ func DataDogTracer() func(http.Handler) http.Handler {
 				return
 			}
 
-			span := tracer.StartSpan("web.request", tracer.ChildOf(sctx))
+			span := tracer.StartSpan("web2.request", tracer.ChildOf(sctx))
 			defer span.Finish()
 
-			r = r.WithContext(context.WithValue(r.Context(), "datadogTraceID", r.Header.Get("X-Datadog-Trace-Id")))
+			r = r.WithContext(context.WithValue(r.Context(), "datadogTraceID", span.Context().TraceID()))
+			r = r.WithContext(context.WithValue(r.Context(), "datadogSpanID", span.Context().SpanID()))
 			next.ServeHTTP(w, r)
 		}
 		return http.HandlerFunc(fn)

@@ -19,7 +19,7 @@ func (h *handler) Welcome() func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		req, err := http.NewRequest("GET", "http://web2-server:3001/web2", nil)
 		if err != nil {
-			h.log.Errorf(ctx, "Unable to create request: %w", err)
+			h.log.Errorf(ctx, "Welcome(): Unable to create request: %w", err)
 			return
 		}
 
@@ -28,7 +28,7 @@ func (h *handler) Welcome() func(w http.ResponseWriter, r *http.Request) {
 
 		_, err = http.DefaultClient.Do(req)
 		if err != nil {
-			h.log.Errorf(ctx, "bad response: %w", err)
+			h.log.Errorf(ctx, "Welcome():bad response: %w", err)
 			return
 		}
 
