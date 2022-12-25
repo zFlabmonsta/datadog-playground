@@ -1,16 +1,19 @@
 package web1
 
 import (
+	"context"
 	"net/http"
-
-	"github.com/zFlabmonsta/datadog-playground/pkg/log"
 )
 
+type LoggerWrapper interface {
+	Errorf(ctx context.Context, format string, args ...interface{})
+	Infof(ctx context.Context, format string, args ...interface{})
+}
 type handler struct {
-	log *log.LoggerWrapper
+	log LoggerWrapper
 }
 
-func NewHandler(logger *log.LoggerWrapper) *handler {
+func NewHandler(logger LoggerWrapper) *handler {
 	return &handler{log: logger}
 }
 

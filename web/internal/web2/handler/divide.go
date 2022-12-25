@@ -1,16 +1,26 @@
 package handler
 
 import (
+	"context"
 	"errors"
 	"net/http"
-
-	"github.com/zFlabmonsta/datadog-playground/pkg/log"
 )
 
 var ErrorDivisibleZero = errors.New("divide(): cannot be divided by zero")
 
+type LoggerWrapper interface {
+	Errorf(ctx context.Context, format string, args ...interface{})
+	Infof(ctx context.Context, format string, args ...interface{})
+}
+
 type Handler struct {
-	log *log.LoggerWrapper
+	log LoggerWrapper
+}
+
+func NewHandler(log LoggerWrapper) *Handler {
+	return &Handler{
+		log: log,
+	}
 }
 
 func (h *Handler) Divide() func(w http.ResponseWriter, r *http.Request) {
