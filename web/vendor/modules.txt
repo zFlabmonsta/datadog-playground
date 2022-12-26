@@ -40,7 +40,6 @@ github.com/go-chi/chi/middleware
 # github.com/go-chi/chi/v5 v5.0.7
 ## explicit; go 1.14
 github.com/go-chi/chi/v5
-github.com/go-chi/chi/v5/middleware
 # github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 ## explicit
 github.com/golang/glog

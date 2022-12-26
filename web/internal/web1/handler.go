@@ -2,6 +2,7 @@ package web1
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -20,7 +21,9 @@ func NewHandler(logger LoggerWrapper) *handler {
 func (h *handler) Welcome() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		req, err := http.NewRequest("GET", "http://web2-server:3001/web2", nil)
+		a := r.URL.Query().Get("a")
+		b := r.URL.Query().Get("b")
+		req, err := http.NewRequest("GET", fmt.Sprintf("http://web2-server:3001/web2?a=%v&b=%v", a, b), nil)
 		if err != nil {
 			h.log.Errorf(ctx, "Welcome(): Unable to create request: %w", err)
 			return
@@ -35,6 +38,6 @@ func (h *handler) Welcome() func(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Write([]byte("it works"))
+		w.Write([]byte("Hello Welcome!"))
 	}
 }
