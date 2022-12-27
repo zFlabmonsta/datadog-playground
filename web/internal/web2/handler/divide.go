@@ -32,7 +32,7 @@ func (h *Handler) Divide() func(w http.ResponseWriter, r *http.Request) {
 
 		result, err := math.Divide(float32(a), float32(b))
 		if isDivisible(err) {
-			h.log.Errorf(r.Context(), "handler(): cannot get result: %w", err)
+			h.log.Errorf(r.Context(), "h.Divide(): cannot get result: %w", err.Error())
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 			return

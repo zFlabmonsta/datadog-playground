@@ -34,7 +34,7 @@ func main() {
 	r.Use(log.Logger(logger))
 
 	handler := web1.NewHandler(logger)
-	r.Get("/divide", handler.Welcome())
+	r.Get("/divide", handler.Divide())
 
 	http.ListenAndServe(":3000", r)
 }

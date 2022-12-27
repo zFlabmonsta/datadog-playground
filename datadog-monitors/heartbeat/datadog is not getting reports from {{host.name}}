@@ -1,0 +1,28 @@
+{
+	"id": 106483902,
+	"name": "datadog-toy - datadog is not getting reports from {{host.name}}",
+	"type": "service check",
+	"query": "\"datadog.agent.up\".over(\"host:docker-desktop\").by(\"host\").last(2).count_by_status()",
+	"message": "@ohmyzen.peter+1@gmail.com\n \nIt seems like the {{host.name}} might be down, there are no data getting reported",
+	"tags": [],
+	"options": {
+		"thresholds": {
+			"critical": 1,
+			"warning": 1,
+			"ok": 1
+		},
+		"notify_audit": false,
+		"notify_no_data": true,
+		"no_data_timeframe": 2,
+		"renotify_interval": 0,
+		"timeout_h": 0,
+		"include_tags": true,
+		"new_group_delay": 60,
+		"escalation_message": "",
+		"silenced": {}
+	},
+	"priority": 1,
+	"restricted_roles": [
+		"4b16cb2c-8352-11ed-a655-da7ad0900002"
+	]
+}

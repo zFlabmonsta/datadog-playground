@@ -2,4 +2,4 @@ package math
 
 import "errors"
 
-var ErrorDivisibleZero = errors.New("divide(): cannot be divided by zero")
+var ErrorDivisibleZero = errors.New("cannot be divided by zero")
